@@ -106,8 +106,8 @@ defmodule AdventOfCode.Year2022.Day1 do
 
   def parse(input) do
     entries =
-        input
-        |> String.split("\n\n")
+      input
+      |> String.split("\n\n")
 
     for entry <- entries do
       entry
