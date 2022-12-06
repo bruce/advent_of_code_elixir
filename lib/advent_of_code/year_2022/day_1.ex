@@ -98,10 +98,10 @@ defmodule AdventOfCode.Year2022.Day1 do
       elves
       |> Enum.sort()
 
-    [
+    {
       sorted |> List.last(),
       sorted |> Enum.slice(-3..-1) |> Enum.sum()
-    ]
+    }
   end
 
   def parse(input) do

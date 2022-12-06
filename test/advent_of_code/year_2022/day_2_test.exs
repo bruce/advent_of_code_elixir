@@ -33,7 +33,7 @@ defmodule AdventOfCode.Year2022.Day2Test do
   end
 
   test "result/1" do
-    assert Day2.result(Day2.sample_inputs() |> List.first()) == [15, 12]
+    assert Day2.result(Day2.sample_inputs() |> List.first()) == {15, 12}
   end
 
   defp sample_input do
