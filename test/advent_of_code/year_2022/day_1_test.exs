@@ -8,6 +8,6 @@ defmodule AdventOfCode.Year2022.Day1Test do
       |> List.first()
       |> Day1.result()
 
-    assert result == 24_000
+    assert result == %{part_1: 24000, part_2: 45000}
   end
 end

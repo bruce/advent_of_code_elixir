@@ -98,16 +98,16 @@ defmodule AdventOfCode.Year2022.Day1 do
       elves
       |> Enum.sort()
 
-    %{
-      part_1: sorted |> List.last(),
-      part_2: sorted |> Enum.slice(-3..-1) |> Enum.sum()
-    }
+    [
+      sorted |> List.last(),
+      sorted |> Enum.slice(-3..-1) |> Enum.sum()
+    ]
   end
 
   def parse(input) do
     entries =
-        input
-        |> String.split("\n\n")
+      input
+      |> String.split("\n\n")
 
     for entry <- entries do
       entry
