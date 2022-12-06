@@ -17,7 +17,14 @@ defmodule AdventOfCode.Year2022.Day3Test do
   end
 
   test "result/1" do
-    assert Day3.result("aBCaDN") == 1
+    assert Day3.result(sample_input()) == {
+             157,
+             70
+           }
+  end
+
+  test "badge/1" do
+    assert Day3.badge([{'abc', 'def'}, {'ghi', 'jkd'}, {'lmd', 'nop'}]) == ?d
   end
 
   defp sample_input do

@@ -110,16 +110,26 @@ defmodule AdventOfCode.Year2022.Day3 do
   @type compartment :: [item]
   @type rucksack :: {compartment, compartment}
 
-  @spec result(String.t()) :: pos_integer()
+  @spec result(String.t()) :: {pos_integer(), pos_integer()}
   def result(input) do
-    input
-    |> parse
-    |> Enum.map(fn rucksack ->
-      rucksack
-      |> mispacked_item()
-      |> priority()
-    end)
-    |> Enum.sum()
+    rucksacks =
+      input
+      |> parse
+
+    {
+      rucksacks
+      |> Enum.map(fn rucksack ->
+        rucksack
+        |> mispacked_item()
+        |> priority()
+      end)
+      |> Enum.sum(),
+      rucksacks
+      |> Enum.chunk_every(3)
+      |> Enum.map(&badge/1)
+      |> Enum.map(&priority/1)
+      |> Enum.sum()
+    }
   end
 
   @spec parse(String.t()) :: [rucksack]
@@ -143,12 +153,29 @@ defmodule AdventOfCode.Year2022.Day3 do
   end
 
   @spec mispacked_item(rucksack) :: item
-  def mispacked_item({compartment_a, compartment_b}) do
-    MapSet.intersection(
-      MapSet.new(compartment_a),
-      MapSet.new(compartment_b)
-    )
-    |> MapSet.to_list()
+  def mispacked_item(rucksack) do
+    rucksack
+    |> Tuple.to_list()
+    |> common_item()
+  end
+
+  @spec badge([rucksack]) :: item
+  def badge(rucksacks) do
+    rucksacks
+    |> Enum.map(&(&1 |> Tuple.to_list() |> Enum.concat()))
+    |> common_item()
+  end
+
+  @spec common_item([compartment]) :: item
+  def common_item([compartment | rest]) do
+    rest
+    |> Enum.reduce(MapSet.new(compartment), fn other, acc ->
+      MapSet.intersection(
+        acc,
+        MapSet.new(other)
+      )
+    end)
+    |> Enum.to_list()
     |> List.first()
   end
 end
