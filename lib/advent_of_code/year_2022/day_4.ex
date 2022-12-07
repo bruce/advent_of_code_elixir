@@ -86,7 +86,6 @@ defmodule AdventOfCode.Year2022.Day4 do
   def parse_assignment(input) do
     [start, stop] =
       input
-      |> String.trim()
       |> String.split("-")
       |> Enum.map(&String.to_integer/1)
 
