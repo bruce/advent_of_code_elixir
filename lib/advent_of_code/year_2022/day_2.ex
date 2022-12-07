@@ -133,9 +133,9 @@ defmodule AdventOfCode.Year2022.Day2 do
   end
 
   def result(input) do
-    [
+    {
       input |> Day2.BasicStrategy.from_string() |> score(),
       input |> Day2.OutcomeStrategy.from_string() |> score()
-    ]
+    }
   end
 end
