@@ -62,27 +62,49 @@ defmodule AdventOfCode.Year2022.Day4 do
   example, there are 2 such pairs.
 
   In how many assignment pairs does one range fully contain the other?
+
+  ## Part Two
+
+  It seems like there is still quite a bit of duplicate work planned. Instead,
+  the Elves would like to know the number of pairs that overlap at all.
+
+  In the above example, the first two pairs (2-4,6-8 and 2-3,4-5) don't overlap,
+  while the remaining four pairs (5-7,7-9, 2-8,3-7, 6-6,4-6, and 2-6,4-8) do
+  overlap:
+
+  5-7,7-9 overlaps in a single section, 7. 2-8,3-7 overlaps all of the sections
+  3 through 7. 6-6,4-6 overlaps in a single section, 6. 2-6,4-8 overlaps in
+  sections 4, 5, and 6. So, in this example, the number of overlapping
+  assignment pairs is 4.
+
+  In how many assignment pairs do the ranges overlap?
   """
   use AdventOfCode.Day
 
+  @type assignment :: MapSet.t()
+  @type pair :: {assignment, assignment}
+
   def result(input) do
-    part1 =
+    pairs =
       input
-      |> String.split(~r/[,\n]/)
-      |> Enum.map(&parse_assignment/1)
-      |> Enum.chunk_every(2)
-      |> Enum.count(fn [a, b] ->
-        MapSet.intersection(a, b) in [a, b]
-      end)
+      |> parse()
 
     {
-      part1,
-      # placeholder
-      1
+      pairs |> count_contained(),
+      pairs |> count_overlapping()
     }
   end
 
-  @spec parse_assignment(String.t()) :: MapSet.t()
+  @spec parse(String.t()) :: [assignment]
+  def parse(input) do
+    input
+    |> String.split(~r/[,\n]/)
+    |> Enum.map(&parse_assignment/1)
+    |> Enum.chunk_every(2)
+    |> Enum.map(&List.to_tuple/1)
+  end
+
+  @spec parse_assignment(String.t()) :: assignment
   def parse_assignment(input) do
     [start, stop] =
       input
@@ -91,5 +113,21 @@ defmodule AdventOfCode.Year2022.Day4 do
 
     Range.new(start, stop)
     |> MapSet.new()
+  end
+
+  @spec count_contained([assignment]) :: pos_integer()
+  defp count_contained(pairs) do
+    pairs
+    |> Enum.count(fn {a, b} ->
+      MapSet.intersection(a, b) in [a, b]
+    end)
+  end
+
+  @spec count_overlapping([assignment]) :: pos_integer()
+  defp count_overlapping(pairs) do
+    pairs
+    |> Enum.count(fn {a, b} ->
+      !MapSet.disjoint?(a, b)
+    end)
   end
 end
