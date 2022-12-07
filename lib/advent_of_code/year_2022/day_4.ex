@@ -68,7 +68,6 @@ defmodule AdventOfCode.Year2022.Day4 do
   def result(input) do
     part1 =
       input
-      |> String.trim()
       |> String.split(~r/[,\n]/)
       |> Enum.map(&parse_assignment/1)
       |> Enum.chunk_every(2)
