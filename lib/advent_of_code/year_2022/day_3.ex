@@ -117,19 +117,29 @@ defmodule AdventOfCode.Year2022.Day3 do
       |> parse
 
     {
-      rucksacks
-      |> Enum.map(fn rucksack ->
-        rucksack
-        |> mispacked_item()
-        |> priority()
-      end)
-      |> Enum.sum(),
-      rucksacks
-      |> Enum.chunk_every(3)
-      |> Enum.map(&badge/1)
-      |> Enum.map(&priority/1)
-      |> Enum.sum()
+      rucksacks |> misplaced_sum,
+      rucksacks |> badge_sum
     }
+  end
+
+  @spec misplaced_sum([rucksack]) :: pos_integer()
+  def misplaced_sum(rucksacks) do
+    rucksacks
+    |> Enum.map(fn rucksack ->
+      rucksack
+      |> mispacked_item()
+      |> priority()
+    end)
+    |> Enum.sum()
+  end
+
+  @spec badge_sum([rucksack]) :: pos_integer()
+  def badge_sum(rucksacks) do
+    rucksacks
+    |> Enum.chunk_every(3)
+    |> Enum.map(&badge/1)
+    |> Enum.map(&priority/1)
+    |> Enum.sum()
   end
 
   @spec parse(String.t()) :: [rucksack]
