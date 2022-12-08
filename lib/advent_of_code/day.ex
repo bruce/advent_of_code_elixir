@@ -1,6 +1,6 @@
 defmodule AdventOfCode.Day do
   @callback sample_inputs() :: [String.t()]
-  @callback result(input :: String.t()) :: {pos_integer(), pos_integer()}
+  @callback result(input :: String.t()) :: {any(), any()}
   @callback advent_info() :: %{year: pos_integer(), day: pos_integer()}
 
   defmacro __using__(_opts) do
